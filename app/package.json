@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "start npm run start-api && npm run start-app",
-    "build": "ng build",
+    "build": "ng build && copy .\\dist\\app2\\browser\\*.* ..\\api\\public\\",
+    "buildp": "copy .\\dist\\app2\\browser\\*.* ..\\api\\public\\",
     "build-mgmt": "ng build --configuration=production --base-href /mgmt/ --deploy-url /mgmt/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
