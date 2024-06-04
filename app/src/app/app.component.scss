@@ -1,0 +1,8 @@
+.command-output {
+    max-height: 300px;  /* Set your desired height */
+    overflow-y: scroll;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border: 1px solid #ccc;
+    white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+  }
