@@ -1,52 +1,4 @@
-// import { HttpClient } from '@angular/common/http';
-// import { Component } from '@angular/core';
-// import { SocketService } from './socket.service';
-
-// @Component({
-//   selector: 'app-root',
-//   templateUrl: './app.component.html',
-//   styleUrl: './app.component.scss'
-// })
-// export class AppComponent {
-//   // title = 'app2';
-//   // cmdtext = 'dir';
-//   // respmsg: any[] = [];
-
-//   // constructor(private http: HttpClient) { }
-
-//   // onSend() {
-//   //   console.log("send", this.cmdtext);
-//   //   this.http.post<any>(`/api/cmd`, { cmd: this.cmdtext }).subscribe(res => {
-//   //     console.log('server res', res);
-//   //     if(res.success) {
-//   //       this.respmsg = res.messages;
-//   //     }
-//   //   })
-//   // }
-
-
-//   message: string | undefined;
-//   messages: string[] = [];
-
-//   constructor(private socketService: SocketService) { }
-
-//   ngOnInit() {
-//     this.socketService.onEvent('chat message').subscribe(msg => {
-//       if (msg) {
-//         this.messages.push(msg);
-//       }
-//     });
-//   }
-
-//   sendMessage() {
-//     if (this.message) {
-//       this.socketService.emit('chat message', this.message);
-//       this.message = '';
-//     }
-//   }
-// }
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { SocketService } from './socket.service';
 
 @Component({
@@ -55,11 +7,13 @@ import { SocketService } from './socket.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  message: string | undefined;
+  message: string = '';
   messages: string[] = [];
   serverResponses: string[] = [];
-  command: string | undefined;
-  commandResponses: string[] = [];
+  command: string = '';
+  commandOutput: string = '';  // Initialize commandOutput
+
+  @ViewChild('commandOutputDiv', { static: false }) commandOutputDiv!: ElementRef;
 
   constructor(private socketService: SocketService) { }
 
@@ -78,7 +32,8 @@ export class AppComponent implements OnInit {
 
     this.socketService.onEvent('command response').subscribe(response => {
       if (response) {
-        this.commandResponses.push(response);
+        this.commandOutput += response + '\n';  // Append response to commandOutput
+        this.scrollToBottom();  // Scroll to bottom whenever new output is added
       }
     });
   }
@@ -92,8 +47,19 @@ export class AppComponent implements OnInit {
 
   runCommand() {
     if (this.command) {
+      this.commandOutput = '';  // Clear previous command output
       this.socketService.runCommand(this.command);
       this.command = '';
+    }
+  }
+
+  scrollToBottom(): void {
+    try {
+      if (this.commandOutputDiv) {
+        this.commandOutputDiv.nativeElement.scrollTop = this.commandOutputDiv.nativeElement.scrollHeight;
+      }
+    } catch (err) {
+      console.error('Error scrolling to bottom', err);
     }
   }
 }

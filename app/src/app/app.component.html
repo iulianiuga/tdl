@@ -1,36 +1,10 @@
-<!-- <input type="text" [(ngModel)]="cmdtext"/> <button (click)="onSend()">send </button> -->
-<!-- <p *ngFor="let item of respmsg">{{item}}</p> -->
-<!-- 
 <div>
-    <ul>
-      <li *ngFor="let msg of messages">{{ msg }}</li>
-    </ul>
-    <input [(ngModel)]="message" placeholder="Type your message here">
-    <button (click)="sendMessage()">Send</button>
+  <input [(ngModel)]="command" placeholder="Type your url here" class="wide-input">
+  <button (click)="runCommand()">Download</button>
+  <h3>Responses:</h3>
+  <div #commandOutputDiv class="command-output">
+    <pre>{{ commandOutput }}</pre>
   </div>
-   -->
+</div>
 
-   <div>
-    <ul>
-      <li *ngFor="let msg of messages">{{ msg }}</li>
-    </ul>
-    <input [(ngModel)]="message" placeholder="Type your message here">
-    <button (click)="sendMessage()">Send</button>
-  </div>
-  <div>
-    <h3>Server Responses:</h3>
-    <ul>
-      <li *ngFor="let response of serverResponses">{{ response }}</li>
-    </ul>
-  </div>
-  <div>
-    <h3>Run Command:</h3>
-    <input [(ngModel)]="command" placeholder="Type your command here">
-    <button (click)="runCommand()">Run Command</button>
-    <h3>Command Responses:</h3>
-    <ul>
-      <li *ngFor="let response of commandResponses">{{ response }}</li>
-    </ul>
-  </div>
-  
-  
+

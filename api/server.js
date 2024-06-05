@@ -30,7 +30,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
-const { exec } = require('child_process');
+// const { exec } = require('child_process');
 const { spawn } = require('child_process');
 
 const app = express();
@@ -44,10 +44,10 @@ const io = socketIo(server, {
 
 app.use(cors());
 
-app.use(express.static(__dirname + '/dist/your-angular-app'));  // Serve the Angular app
+app.use(express.static(__dirname + '/public'));  // Serve the Angular app
 
 app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/dist/your-angular-app/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 io.on('connection', (socket) => {
@@ -59,11 +59,8 @@ io.on('connection', (socket) => {
 
     socket.on('run command', (cmd) => {
         console.log('command received: ' + cmd);
-        const parts = cmd.split(' ');
-        const command = parts[0];
-        const args = parts.slice(1);
-
-        const child = spawn(command, args);
+        const command = "tidal-dl";//parts[0];
+        const child = spawn(command,[ "-l", cmd]);
 
         child.stdout.on('data', (data) => {
             console.log(`stdout: ${data}`);
@@ -72,7 +69,7 @@ io.on('connection', (socket) => {
 
         child.stderr.on('data', (data) => {
             console.error(`stderr: ${data}`);
-            socket.emit('command response', `stderr: ${data}`);
+            socket.emit('Error', `stderr: ${data}`);
         });
 
         child.on('close', (code) => {
