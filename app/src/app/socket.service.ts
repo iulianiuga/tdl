@@ -9,7 +9,10 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://192.168.100.103:3000');
+    const serverUrl = `${window.location.protocol}//${window.location.hostname}`;//:${window.location.port}`;
+    console.log (serverUrl);
+    //this.socket = io('http://192.168.100.103:3000');
+    this.socket = io(serverUrl +':3000');
   }
 
   onEvent(event: string): Observable<any> {
